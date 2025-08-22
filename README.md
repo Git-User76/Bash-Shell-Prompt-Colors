@@ -1,7 +1,9 @@
-# Main: green color
-export PS1='\[\e[0;32m\][\u@\h \W]\$\[\e[0m\] '
+# GREEN color to regular users and RED color to root
 
-<br>
-
-# Remote: red color
-export PS1='\[\e[0;91m\][\u@\h \W]\$\[\e[0m\] '
+if [[ $EUID -eq 0 ]]; then
+    # Root prompt - RED theme
+    PS1='\[\033[31m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[31m\]❯\[\033[0m\] '
+else
+    # Regular user prompt - CYAN/GREEN theme
+    PS1='\[\033[36m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[32m\]❯\[\033[0m\] '
+fi
