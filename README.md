@@ -1,73 +1,75 @@
-Simple bash script to customize your shell prompt with color-coded user identification.
+Personal script to customize bash shell prompt with custom colors.
+
+Just copy and paste the code in the terminal.
 
 <br>
 
-## Prerequisites
-- Bash shell (version 4.0+).
-- Terminal with color support.
-- Write access to home directory.
+## Installation
+### Regular User Prompt Colors
+```shell
+# Ensure regular user's .bashrc sources .bashrc.d
+grep -q "bashrc.d" ~/.bashrc || echo '
+# Source custom scripts from .bashrc.d/
+if [ -d ~/.bashrc.d ]; then
+    for i in ~/.bashrc.d/*.sh; do
+        [ -r "$i" ] && source "$i"
+    done
+fi' >> ~/.bashrc
+
+# Create bashrc.d drop-in directory (if not exist)
+mkdir -p ~/.bashrc.d/
+
+# Create script in drop-in directory
+cat << 'EOF' > ~/.bashrc.d/shell_color.sh
+#!/bin/bash
+# Regular user prompt - GREEN color
+PS1='\[\033[32m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[32m\]❯\[\033[0m\] '
+EOF
+
+# Apply changes to current session
+source ~/.bashrc
+```
+
+### For Root User Prompt Colors
+```shell
+# Ensure root's .bashrc sources the .bashrc.d directory
+sudo bash -c 'grep -q "bashrc.d" /root/.bashrc || echo "
+# Source custom scripts from .bashrc.d/
+if [ -d ~/.bashrc.d ]; then
+    for i in ~/.bashrc.d/*.sh; do
+        [ -r \"\$i\" ] && source \"\$i\"
+    done
+fi" >> /root/.bashrc'
+
+# Create bashrc.d drop-in directory (if not exist)
+sudo mkdir -p /root/.bashrc.d/
+
+# Create script in drop-in directory
+sudo bash -c 'cat << "EOF" > /root/.bashrc.d/shell_color.sh
+#!/bin/bash
+# Root prompt - RED color
+PS1='"'"'\[\033[31m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[31m\]❯\[\033[0m\] '"'"'
+EOF'
+```
 
 ---
 <br>
 
-## Installation
-### Create Drop-In Configuration Directory
-- Create drop-in directory for custom scripts read by `.bashrc` (default in many distros).
-- If `.bashrc` is not configured to read `.bashrc.d/` scripts make the required changes.
+## DONE - When Do Changes Take Effect?
+**For Regular Users**
+- **Immediate visibility after:**
+    - Running `source ~/.bashrc` in current terminal.
+    - Running `bash` to start a subshell.
+- **Automatic visibility in:**
+    - New terminal windows/tabs.
+    - New SSH sessions.
+    - After logout and login.
 
-**For Regular Users:**
-```shell
-mkdir -p ~/.bashrc.d/
-```
-
-**For System-Wide (Root) Access:**
-```shell
-sudo mkdir -p /root/.bashrc.d/
-```
-
-<br>
-
-### Create Script In Drop-In Directory
-**Regular User Configuration**
-```shell
-cat << 'EOF' > ~/.bashrc.d/shell_color.sh
-#!/bin/bash
-# Modern prompt colors - Visual user identification
-if [[ $EUID -eq 0 ]]; then
-    # Root prompt - RED theme
-    PS1='\[\033[31m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[31m\]❯\[\033[0m\] '
-else
-    # Regular user prompt - CYAN/GREEN theme
-    PS1='\[\033[36m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[32m\]❯\[\033[0m\] '
-fi
-EOF
-```
-
-**Root Configuration (for sudo sessions)**
-```shell
-sudo cat << 'EOF' > /root/.bashrc.d/shell_color.sh
-#!/bin/bash
-# Modern prompt colors - Visual user identification
-if [[ $EUID -eq 0 ]]; then
-    # Root prompt - RED theme
-    PS1='\[\033[31m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[31m\]❯\[\033[0m\] '
-else
-    # Regular user prompt - CYAN/GREEN theme
-    PS1='\[\033[36m\]\u@\h\[\033[0m\] \[\033[34m\]\w\[\033[0m\] \[\033[32m\]❯\[\033[0m\] '
-fi
-EOF
-```
-
-<br>
-
-## Implement Changes
-- Reload your shell configuration to implement changes.
-- Alternatively, start a new terminal session.
-```shell
-source ~/.bashrc
-```
-
-<br>
-
-## DONE
-After executing the code, the colors of the shell prompt will change.
+**For Root User**
+- **Immediate visibility after:**
+    - Running `source ~/.bashrc` while already in root shell.
+    - Executing `exec bash` while already in root shell.
+- **Automatic visibility when:**
+    - Starting new root session with `sudo -i`.
+    - Using `su -` (if root password is set).
+    - Opening new terminal/SSH session as root user.
