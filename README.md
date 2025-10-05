@@ -4,8 +4,8 @@ Just copy and paste the code in the terminal.
 
 <br>
 
-## Installation
-### Regular User Prompt Colors
+## 🔧 Installation
+### 🟢 Regular User Prompt Colors
 ```shell
 # Ensure regular user's .bashrc sources .bashrc.d
 grep -q "bashrc.d" ~/.bashrc || echo '
@@ -30,7 +30,7 @@ EOF
 source ~/.bashrc
 ```
 
-### For Root User Prompt Colors
+### 🔴 For Root User Prompt Colors
 ```shell
 # Ensure root's .bashrc sources the .bashrc.d directory
 sudo bash -c 'grep -q "bashrc.d" /root/.bashrc || echo "
@@ -55,8 +55,8 @@ EOF'
 ---
 <br>
 
-## DONE - When Do Changes Take Effect?
-**For Regular Users**
+## ✅ DONE - When Do Changes Take Effect?
+🟢 **For Regular Users**
 - **Immediate visibility after:**
     - Running `source ~/.bashrc` in current terminal.
     - Running `bash` to start a subshell.
@@ -65,7 +65,7 @@ EOF'
     - New SSH sessions.
     - After logout and login.
 
-**For Root User**
+🔴 **For Root User**
 - **Immediate visibility after:**
     - Running `source ~/.bashrc` while already in root shell.
     - Executing `exec bash` while already in root shell.
