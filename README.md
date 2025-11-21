@@ -30,7 +30,7 @@ EOF
 source ~/.bashrc
 ```
 
-### 🔴 For Root User Prompt Colors
+### 🔴 Root User Prompt Colors
 ```shell
 # Ensure root's .bashrc sources the .bashrc.d directory
 sudo bash -c 'grep -q "bashrc.d" /root/.bashrc || echo "
