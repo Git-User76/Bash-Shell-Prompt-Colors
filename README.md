@@ -96,6 +96,14 @@ EOF
 source ~/.bashrc
 ```
 
+### Optional: Custom Prompt
+```
+cat << 'EOF' > ~/.bashrc.d/prompt.sh
+# Set terminal title to: user@host:directory
+PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
+EOF
+```
+
 ---
 <br>
 
